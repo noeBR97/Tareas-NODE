@@ -31,5 +31,37 @@ const controlador = {
         } catch (error) {
             res.status(500).json({mensaje: 'Error al registrar el usuario', error});
         }
+    },
+
+    login : async (req, res) => {
+        try {
+            const {email, password} = req.body;
+
+            //comprobar si faltan campos
+            if (!email || !password) {
+                return res.status(400).json({mensaje: 'Faltan campos obligatorios'});
+            }
+
+            const usuario = await Usuario.findOne({email});
+            //comprobar si existe el usuario
+            if (!usuario) {
+                return res.status(400).json({mensaje: 'Credenciales inválidas'});
+            }
+
+            const esPasswordValido = await bcrypt.compare(password, usuario.password);
+            //comprobar si la contraseña es correcta
+            if (!esPasswordValido) {
+                return res.status(400).json({mensaje: 'Credenciales inválidas'});
+            }
+
+            const token = jwt.sign(
+                {id: usuario._id, email: usuario.email, rol: usuario.rol},
+                process.env.JWT_SECRET,
+                {expiresIn: '2h'}
+            )
+            res.status(200).json({mensaje: 'Login exitoso', token})
+        } catch (error) {
+            res.status(500).json({mensaje: 'Error al iniciar sesión', error});
+        }
     }
 }
