@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 const tareaSchema = new mongoose.Schema({
-    idU: { type: uuidv4 },
+    idU: { type: uuidv4, default: null },
     descripcion: {type: String, required: true},
     duracion: {type: Number},
     dificultad: {type: String, enum: ['XS', 'S', 'M', 'L', 'XL'], required: true},
