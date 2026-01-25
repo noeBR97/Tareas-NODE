@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import Usuario from '../models/usuario.js';
 
 export const registro = async (req, res) => {
-    const {nombre, email, password} = req.body
+    const {nombre, email, password, apellido1, apellido2} = req.body
 
     try {
         //Verificar si el usuario ya existe
@@ -13,7 +13,7 @@ export const registro = async (req, res) => {
         }
 
         //Verificar si faltan campos obligatorios
-        if (!nombre || !email || !password) {
+        if (!nombre || !email || !password || !apellido1) {
             return res.status(400).json({mensaje: 'Faltan campos obligatorios'});
         }
 
@@ -21,6 +21,8 @@ export const registro = async (req, res) => {
 
         const nuevoUsuario = new Usuario({
             nombre,
+            apellido1,
+            apellido2,
             email,
             password: hashPassword
         });
