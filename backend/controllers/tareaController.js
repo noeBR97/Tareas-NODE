@@ -253,7 +253,35 @@ const controlador = {
         }
     },
 
-    
+    cambiarEstado: async(req, res) => {
+        try {
+            const idUsuario = req.usuario.id
+            const idTarea = req.params.idTarea
+            const tarea = await Tarea.findById(idTarea)
+            const {estado} = req.body
+
+            if(!estado || estado.trim() === '') {
+                return res.status(400).json({msg: 'El estado no puede estar vacío'})
+            }
+
+            if(!tarea) {
+                return res.status(400).json({msg: 'No se ha encontrado la tarea'})
+            }
+
+            if(tarea.idU !== idUsuario) {
+                console.log('La tarea no está asignada a este usuario.');
+                return res.status(200).json({msg: 'La tarea no está asignada a este usuario.'});
+            }
+
+            tarea.estado = estado
+            await tarea.save()
+
+            res.status(201).json({msg: 'Cambio de estado realizado correctamente'})
+        } catch(error) {
+            console.error('❌ Error al cambiar el estado:', error);
+            res.status(500).json({ 'msg': 'Error al cambiar el estado' });
+        }
+    }
 }
 
 export default controlador
