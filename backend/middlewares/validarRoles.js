@@ -16,6 +16,10 @@ export const esUsuario = (req, res, next) => {
         return res.status(401).json({ msg: 'No hay usuario autenticado' })
     }
 
+    if(req.usuario.rol !== 'usuario') {
+        return res.status(401).json({ msg: 'Acceso solo para usuarios.' })
+    }
+
     console.log('Accediendo como usuario...')
     next()
 }
