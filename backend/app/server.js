@@ -14,8 +14,8 @@ class Server {
 
     constructor() {
         this.app = express();
-        this.usuariosPath = '/api/usuarios';
-        this.tareasPath = '/api/tareas'
+        this.usuariosPath = '/api/users';
+        this.tareasPath = '/api/tasks'
         this.authPath = '/api';
 
         //Middlewares

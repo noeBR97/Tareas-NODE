@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import Usuario from '../models/usuario.js';
 
 export const registro = async (req, res) => {
-    const {nombre, email, password, apellido1, apellido2} = req.body
+    const {nombre, email, password, apellido1, apellido2, rol} = req.body
 
     try {
         //Verificar si el usuario ya existe
@@ -24,7 +24,8 @@ export const registro = async (req, res) => {
             apellido1,
             apellido2,
             email,
-            password: hashPassword
+            password: hashPassword,
+            rol: rol
         });
         await nuevoUsuario.save();
 

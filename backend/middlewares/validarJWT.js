@@ -9,11 +9,7 @@ export const validarJWT = (req , res , next) => {  //Estas asignaciones son nece
 
     try {
         const {id, rol} = jwt.verify(token, process.env.SECRETORPRIVATEKEY)
-        req.id = id
-        req.rol = rol
-        console.log(id)
-        console.log(rol)
-        console.log(token)
+        req.usuario = {id, rol}
         next()
     }catch(error){
         console.log(error);
