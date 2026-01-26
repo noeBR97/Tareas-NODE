@@ -1,0 +1,524 @@
+{
+  "info": {
+    "_postman_id": "767b6c7a-5f5f-4eb8-9f64-0918771b86d3",
+    "name": "Tareas - Mongo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48599476"
+  },
+  "item": [
+    {
+      "name": "registro",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Navi\",\r\n    \"apellido1\": \"Navidad\",\r\n    \"apellido2\": \"\",\r\n    \"email\": \"navi@email.com\",\r\n    \"password\": \"navi1234\",\r\n    \"rol\": \"admin\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/registro",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"navi@email.com\",\r\n    \"password\": \"navi1234\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/login",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "add tarea",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYzY2YwZmZkMjJhNTM5YTE2Y2Y5MCIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTQ0NjgwOSwiZXhwIjoxNzY5NDU0MDA5fQ.OvoUPcoKUOJzDO_2g29L5LBghpSmGsaENF_Ra5kbq9c",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 4\",\r\n    \"duracion\": 100,\r\n    \"dificultad\": \"L\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update tarea",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYyYjQ4MWI2MjliMDYyYjU5NjJkMiIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3NjkzNTk4NDMsImV4cCI6MTc2OTM2NzA0M30.tJ3QiCqt3EKe86FheKZ6xFXmSNiAvcsLLrLU3WdVDUU",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 1\",\r\n    \"duracion\": 20,\r\n    \"dificultad\": \"S\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/697645a8375dd7dc9eaaf1d5",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "697645a8375dd7dc9eaaf1d5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete tarea",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYzY2YwZmZkMjJhNTM5YTE2Y2Y5MCIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTM1NzQxOSwiZXhwIjoxNzY5MzY0NjE5fQ.rFIKojYUSdgDsYBYTKMsT-jViqEqd7knDKWC6brtEyk",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 1\",\r\n    \"duracion\": 20,\r\n    \"dificultad\": \"M\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/6976495274f401bae43e2a8a",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "6976495274f401bae43e2a8a"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "asignar tarea - admin",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYzY2YwZmZkMjJhNTM5YTE2Y2Y5MCIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTQ0NjgwOSwiZXhwIjoxNzY5NDU0MDA5fQ.OvoUPcoKUOJzDO_2g29L5LBghpSmGsaENF_Ra5kbq9c",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 1\",\r\n    \"duracion\": 20,\r\n    \"dificultad\": \"S\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/asignar/6977b2762aebd36f599000ef/4404b051-24d3-4fd7-9c51-c4702cb21547",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "asignar",
+            "6977b2762aebd36f599000ef",
+            "4404b051-24d3-4fd7-9c51-c4702cb21547"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ver tareas",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVlZmRiODRlLTZhYmQtNGJkYS04NThmLWE3NDFjOWEwZmEwNSIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTQ1ODY4NSwiZXhwIjoxNzY5NDY1ODg1fQ.2CocZylbbHNrqTntbASi-M8RIv0-_Dht0LGCYjb2JGw",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "buscar tarea",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYzY2YwZmZkMjJhNTM5YTE2Y2Y5MCIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTQ0NjgwOSwiZXhwIjoxNzY5NDU0MDA5fQ.OvoUPcoKUOJzDO_2g29L5LBghpSmGsaENF_Ra5kbq9c",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 2\",\r\n    \"duracion\": 120,\r\n    \"dificultad\": \"XL\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/697645a8375dd7dc9eaaf1d5",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "697645a8375dd7dc9eaaf1d5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "llenar sistema",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYzY2YwZmZkMjJhNTM5YTE2Y2Y5MCIsImVtYWlsIjoibmF2aUBlbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTQ0NjgwOSwiZXhwIjoxNzY5NDU0MDA5fQ.OvoUPcoKUOJzDO_2g29L5LBghpSmGsaENF_Ra5kbq9c",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 2\",\r\n    \"duracion\": 120,\r\n    \"dificultad\": \"XL\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/llenar/7",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "llenar",
+            "7"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "buscar tareas por hacer",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NzYyYjQ4MWI2MjliMDYyYjU5NjJkMiIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3Njk0NTI2MTcsImV4cCI6MTc2OTQ1OTgxN30.eQ8nOUDImOgRkDciggjd8t5DiA7tfctyN8jq2tAQ5iE",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/por-hacer",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "por-hacer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "buscar tareas asignadas",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MDRiMDUxLTI0ZDMtNGZkNy05YzUxLWM0NzAyY2IyMTU0NyIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3Njk0NTQwNzEsImV4cCI6MTc2OTQ2MTI3MX0.NdboQjYYaWZZ0iMrJyKSEAcV3UgQZPnV8-ZXDd3OrNg",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/asignadas",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "asignadas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "asignar tarea propia",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MDRiMDUxLTI0ZDMtNGZkNy05YzUxLWM0NzAyY2IyMTU0NyIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3Njk0NTQwNzEsImV4cCI6MTc2OTQ2MTI3MX0.NdboQjYYaWZZ0iMrJyKSEAcV3UgQZPnV8-ZXDd3OrNg",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 1\",\r\n    \"duracion\": 20,\r\n    \"dificultad\": \"S\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/asignar-propia/6977ab03b9da987211fd8210",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "asignar-propia",
+            "6977ab03b9da987211fd8210"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "desasignar tarea propia",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MDRiMDUxLTI0ZDMtNGZkNy05YzUxLWM0NzAyY2IyMTU0NyIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3Njk0NTQwNzEsImV4cCI6MTc2OTQ2MTI3MX0.NdboQjYYaWZZ0iMrJyKSEAcV3UgQZPnV8-ZXDd3OrNg",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"descripcion\": \"Descripcion de la tarea 1\",\r\n    \"duracion\": 20,\r\n    \"dificultad\": \"S\"\r\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/desasignar-propia/6977ab03b9da987211fd8210",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "desasignar-propia",
+            "6977ab03b9da987211fd8210"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cambiar estado tarea",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "x-token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MDRiMDUxLTI0ZDMtNGZkNy05YzUxLWM0NzAyY2IyMTU0NyIsImVtYWlsIjoibm9lQGVtYWlsLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3Njk0NTQwNzEsImV4cCI6MTc2OTQ2MTI3MX0.NdboQjYYaWZZ0iMrJyKSEAcV3UgQZPnV8-ZXDd3OrNg",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"estado\": \"por hacer\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://127.0.0.1:9090/api/tasks/cambiar-estado/697645a8375dd7dc9eaaf1d5",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "9090",
+          "path": [
+            "api",
+            "tasks",
+            "cambiar-estado",
+            "697645a8375dd7dc9eaaf1d5"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
