@@ -222,7 +222,38 @@ const controlador = {
             console.error('❌ Error al asignar la tarea:', error);
             res.status(500).json({ 'msg': 'Error al asignar la tarea' });
         }
-    }
+    },
+
+    desasignarTareaPropia: async(req, res) => {
+        try {
+            const idUsuario = req.usuario.id
+            const idTarea = req.params.idTarea
+            const tarea = await Tarea.findById(idTarea)
+
+            if(!tarea) {
+                console.log('‼️ Tarea no encontrada!');
+                return res.status(404).json({ 'msg': 'Tarea no encontrada' });
+            }
+
+            if(tarea.idU === idUsuario) {
+                tarea.idU = null
+                tarea.estado = 'por hacer'
+
+                await tarea.save()
+
+                console.log('🔵 Tarea desasignada correctamente!');
+                return res.status(200).json(tarea);
+            } else {
+                console.log('La tarea no está asignada a este usuario.');
+                return res.status(200).json({msg: 'La tarea no está asignada a este usuario.'});
+            }
+        } catch(error) {
+            console.error('❌ Error al asignar la tarea:', error);
+            res.status(500).json({ 'msg': 'Error al asignar la tarea' });
+        }
+    },
+
+    
 }
 
 export default controlador
