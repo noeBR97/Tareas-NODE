@@ -6,8 +6,13 @@ import {router as authRoutes} from '../routes/authRoutes.js';
 import {router as tareaRoutes} from '../routes/tareaRoutes.js';
 import {router as userRoutes} from '../routes/userRoutes.js';
 import kleur from 'kleur';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import mongoose from "mongoose";
 mongoose.set('strictQuery', false);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 class Server {
@@ -53,6 +58,11 @@ class Server {
         this.app.use(this.authPath , authRoutes);
         this.app.use(this.usuariosPath , userRoutes);
         this.app.use(this.tareasPath , tareaRoutes);
+        this.app.use(
+            express.static(
+                path.join(__dirname, '../public')
+            )
+        );
     }
 
     listen() {
