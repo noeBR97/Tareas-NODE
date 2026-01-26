@@ -1,13 +1,21 @@
 import Tarea from "../models/tarea.js";
 import Usuario from '../models/usuario.js'
 import casual from 'casual'
+import { redisClient } from '../config/redis.js';
 
 const controlador = {
     getAllTareas: async (req, res) => {
         try {
             const tareas = await Tarea.find().lean()
+            const tareasCached = await redisClient.get('tareas')
+
+            if(tareasCached) {
+                console.log((`🟢 Cache de tareas usado`));
+                return res.status(200).json(JSON.parse(tareasCached));
+            }
 
             if(tareas.length > 0) {
+                await redisClient.setEx('tareas',60, JSON.stringify(tareas))
                 console.log('🔵 Listado correcto!');
                 res.status(200).json(tareas);
             } else {
@@ -23,14 +31,21 @@ const controlador = {
     getTareaById: async (req, res) => {
         try {
             const tarea = await Tarea.findOne({idTarea: req.params.id})
+            const tareaCached = await redisClient.get(`tarea:${tarea}`)
+
+            if (tareaCached) {
+                console.log(`🟢 Cache de tarea usada`);
+                return res.status(200).json(JSON.parse(tareaCached));
+            }
 
             if(!tarea) {
                 console.log('‼️ Tarea no encontrada!');
                 res.status(404).json({ 'msg': 'Tarea no encontrada' });
+            } else {
+                await redisClient.setEx(`tarea:${tarea}`, 60, JSON.stringify(tarea))
+                console.log('🔵 Tarea encontrada correctamente!');
+                res.status(200).json(tarea);
             }
-
-            console.log('🔵 Tarea encontrada correctamente!');
-            res.status(200).json(tarea);
         } catch(error) {
             console.error('❌ Error al obtener la tarea:', error);
             res.status(500).json({ 'msg': 'Error al obtener la tarea' });
