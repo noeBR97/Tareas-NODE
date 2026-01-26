@@ -153,7 +153,32 @@ const controlador = {
             console.error('❌ Error al crear usuarios:', error);
             res.status(500).json({ 'msg': 'Error al crear usuarios' });
         }
-    }
+    },
+
+    //tareas generales por hacer, pero que no esten asignadas a nadie
+    getTareasPorHacer: async(req, res) => {
+        try {
+            const tareas = await Tarea.find({estado: 'por hacer'})
+
+            if(!tareas) {
+                console.log('‼️ Tareas no encontradas!');
+                return res.status(404).json({ 'msg': 'Tareas no encontradas' });
+            }
+
+            if(tareas.length === 0) {
+                console.log('No hay tareas por hacer');
+                return res.status(404).json({ 'msg': 'No hay tareas por hacer' });
+            }
+
+            console.log('🔵 Tareas encontradas correctamente!');
+            res.status(200).json(tareas);
+        } catch(error) {
+            console.error('❌ Error al obtener las tareas:', error);
+            res.status(500).json({ 'msg': 'Error al obtener las tareas' });
+        }
+    },
+
+    
 }
 
 export default controlador
