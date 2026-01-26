@@ -296,7 +296,25 @@ const controlador = {
             console.error('❌ Error al cambiar el estado:', error);
             res.status(500).json({ 'msg': 'Error al cambiar el estado' });
         }
-    }
+    },
+
+    getTareaByDificultad: async(req, res) => {
+        try {
+            const dificultad = req.params.dificultad
+            const tareas = (await Tarea.find()).filter(t => t.dificultad === dificultad)
+
+            if(!tareas) {
+                console.log('‼️ tareas no encontradas!');
+                res.status(404).json({ 'msg': 'Tareas no encontradas' });
+            } else {
+                console.log('🔵 Tareas encontrada correctamente!');
+                res.status(200).json(tareas);
+            }
+        } catch(error) {
+            console.error('❌ Error al obtener las tareas:', error);
+            res.status(500).json({ 'msg': 'Error al obtener las tareas' });
+        }
+    },
 }
 
 export default controlador
