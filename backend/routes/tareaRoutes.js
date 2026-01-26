@@ -8,10 +8,13 @@ export const router = Router();
 router.use(validarJWT)
 
 //admin
+router.get('/', esAdmin, controlador.getAllTareas)
+router.get('/:idTarea', esAdmin, controlador.getTareaById)
 router.post('/', esAdmin, controlador.addTarea)
 router.put('/:id', esAdmin, controlador.updateTarea)
 router.delete('/:id', esAdmin, controlador.deleteTarea)
 router.put('/asignar/:idTarea/:idUsuario', esAdmin, controlador.asignarTarea)
+router.post('/llenar/:numUsarios', esAdmin, controlador.llenarSistema)
 // //tareas por realizar
 // router.get('/por-hacer', obtenerTareasPorHacer) 
 

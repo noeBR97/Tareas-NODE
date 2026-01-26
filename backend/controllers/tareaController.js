@@ -1,5 +1,6 @@
 import Tarea from "../models/tarea.js";
 import Usuario from '../models/usuario.js'
+import casual from 'casual'
 
 const controlador = {
     getAllTareas: async (req, res) => {
@@ -21,7 +22,7 @@ const controlador = {
 
     getTareaById: async (req, res) => {
         try {
-            const tarea = await Tarea.findOne({_id: req.params.id})
+            const tarea = await Tarea.findOne({idTarea: req.params.id})
 
             if(!tarea) {
                 console.log('‼️ Tarea no encontrada!');
@@ -122,6 +123,35 @@ const controlador = {
         } catch (error) {
             console.error('❌ Error al asignar la tarea:', error);
             res.status(500).json({ 'msg': 'Error al asignar la tarea' });
+        }
+    },
+
+    llenarSistema: async (req, res) => {
+        try {
+            const numUsuarios = parseInt(req.params.numUsarios, 10)
+
+            if(numUsuarios <= 0) {
+                return res.status(400).json({msg: 'El número de usuarios debe ser mayor de 0.'})
+            }
+            
+            const usuarios = []
+        
+            for (let i = 0; i < numUsuarios; i++) {
+                usuarios.push({
+                    nombre: casual.first_name,
+                    apellido1: casual.last_name,
+                    email: `${casual.email}_${i}`, //se evitan duplicados
+                    password: 'user1234',
+                    rol: 'usuario'
+                })
+            }
+            await Usuario.insertMany(usuarios)
+
+            console.log('🔵 Usuarios creados correctamente.')
+            res.status(201).json({msg: 'usuarios creados correctamente', creados: usuarios.length, total})
+        } catch(error) {
+            console.error('❌ Error al crear usuarios:', error);
+            res.status(500).json({ 'msg': 'Error al crear usuarios' });
         }
     }
 }
