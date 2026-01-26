@@ -315,6 +315,63 @@ const controlador = {
             res.status(500).json({ 'msg': 'Error al obtener las tareas' });
         }
     },
+
+    getTareasByUsuario: async(req, res) => {
+        try {
+            const usuario = req.usuario.id
+            const tareas = await Tarea.find({idU: usuario}).lean()
+
+            if(tareas.length === 0) {
+                console.log('‼️ Tareas no encontradas!');
+                return res.status(404).json({ 'msg': 'Tareas no encontradas' });
+            } else {
+                console.log('🔵 Tareas encontradas correctamente!');
+                return res.status(200).json(tareas);
+            }
+        } catch(error) {
+            console.error('❌ Error al obtener las tareas:', error);
+            res.status(500).json({ 'msg': 'Error al obtener las tareas' });
+        }
+    },
+
+    getTareasPorRango: async(req, res) => {
+        try {
+            const {min, max} = req.params
+            const niveles = ['XS', 'S', 'M', 'L', 'XL']
+
+            const minIndex = niveles.indexOf(min)
+            const maxIndex = niveles.indexOf(max)
+
+            if(minIndex > maxIndex) {
+                return res.status(400).json({msg: 'El rango de dificultad no es válido.'})
+            }
+
+            const rango = niveles.slice(minIndex, maxIndex + 1)
+            const tareas = await Tarea.find({
+                dificultad: {$in: rango}
+            })
+
+            res.status(200).json(tareas)
+        } catch(error) {
+            console.error('❌ Error al obtener tareas por rango:', error);
+            res.status(500).json({msg: 'Error al obtener tareas por rango'});
+        }
+    },
+
+    getTareasXL: async(req, res) => {
+        try {
+            const tareasXL = (await Tarea.find()).filter(t=> t.dificultad === 'XL').lean()
+
+            if(tareasXL.length === 0) {
+                return res.status(400).json({msg: 'No hay tareas de esa dificultad.'})
+            }
+
+            res.status(200).json(tareasXL)
+        } catch(error) {
+            console.error('❌ Error al obtener tareas de esa dificultad:', error);
+            res.status(500).json({msg: 'Error al obtener tareas de esa dificultad'});
+        }
+    }
 }
 
 export default controlador
