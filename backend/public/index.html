@@ -63,27 +63,6 @@
 <input id="userId" placeholder="ID Usuario">
 <button onclick="tareasPorUsuario()">Consultar</button>
 
-<h3>Tareas de usuario por dificultad</h3>
-<select id="difUsuario">
-    <option>XS</option>
-    <option>S</option>
-    <option>M</option>
-    <option>L</option>
-    <option>XL</option>
-</select>
-<button onclick="tareasUsuarioDificultad()">Consultar</button>
-
-<h3>Tareas sin asignar</h3>
-<button onclick="tareasSinAsignar()">Consultar</button>
-
-<h3>Tareas por estado</h3>
-<select id="estado">
-    <option>por hacer</option>
-    <option>haciendo</option>
-    <option>hecha</option>
-</select>
-<button onclick="tareasPorEstado()">Consultar</button>
-
 <hr>
 
 <h2>Resultado</h2>
@@ -204,32 +183,73 @@ async function mostrar(url) {
     mostrarResultado(data);
 }
 
-function tareasPorDificultad() {
-    mostrar(`${API_TASKS}/dificultad/${dificultad.value}`);
+async function tareasPorDificultad() {
+    const dificultad = document.getElementById('dificultad').value;
+
+    const res = await fetch(`${API_TASKS}/${dificultad}`, {
+        method: 'GET',
+        headers: headers()
+    });
+
+    const data = await res.json();
+    mostrarResultado(data);
 }
 
-function tareasPorRango() {
-    mostrar(`${API_TASKS}/rango/${min.value}/${max.value}`);
+async function tareasPorRango() {
+    const min = document.getElementById('min').value.trim();
+    const max = document.getElementById('max').value.trim();
+
+    if (!min || !max) {
+        mostrarResultado({ msg: 'Debes indicar dificultad mínima y máxima' });
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_TASKS}/${min}/${max}`, {
+            method: 'GET',
+            headers: headers()
+        });
+
+        const data = await res.json();
+        mostrarResultado(data);
+
+    } catch (error) {
+        console.error('Error al obtener tareas por rango:', error);
+        mostrarResultado({ msg: 'Error al conectar con el servidor' });
+    }
 }
 
-function tareasMaxDificultad() {
-    mostrar(`${API_TASKS}/max-dificultad`);
+async function tareasMaxDificultad() {
+    try {
+        const res = await fetch(`${API_TASKS}/dificultad-xl`, {
+            method: 'GET',
+            headers: headers()
+        });
+
+        const data = await res.json();
+        mostrarResultado(data);
+
+    } catch (error) {
+        console.error('Error al obtener tareas xl:', error);
+        mostrarResultado({ msg: 'Error al conectar con el servidor' });
+    }
 }
 
-function tareasPorUsuario() {
-    mostrar(`${API_TASKS}/usuario/${userId.value}`);
-}
+async function tareasPorUsuario() {
+    const idUsuario = document.getElementById('userId').value.trim()
+    try {
+        const res = await fetch(`${API_TASKS}/${idUsuario}`, {
+            method: 'GET',
+            headers: headers()
+        });
 
-function tareasUsuarioDificultad() {
-    mostrar(`${API_TASKS}/usuario/${userId.value}/dificultad/${difUsuario.value}`);
-}
+        const data = await res.json();
+        mostrarResultado(data);
 
-function tareasSinAsignar() {
-    mostrar(`${API_TASKS}/sin-asignar`);
-}
-
-function tareasPorEstado() {
-    mostrar(`${API_TASKS}/estado/${encodeURIComponent(estado.value)}`);
+    } catch (error) {
+        console.error('Error al obtener tareas por usuario:', error);
+        mostrarResultado({ msg: 'Error al conectar con el servidor' });
+    }
 }
 </script>
 
