@@ -3,6 +3,10 @@ export const esAdmin = (req, res, next) => {
         return res.status(401).json({ msg: 'No hay usuario autenticado' })
     }
 
+    if(req.usuario.rol !== 'admin') {
+        return res.status(401).json({ msg: 'Acceso solo para administradores.' })
+    }
+    
     console.log('Accediendo como administrador...')
     next()
 }
