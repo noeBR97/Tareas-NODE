@@ -94,6 +94,35 @@ const controlador = {
             console.error('❌ Error al eliminar la tarea:', error);
             res.status(500).json({ 'msg': 'Error al eliminar la tarea' });
         }
+    },
+
+    asignarTarea: async (res, req) => {
+        try {
+            const {idTarea, idUsuario} = req.params
+            const usuario = await Usuario.findOne({_id: idUsuario})
+            const tarea = await Tarea.findOne({id: idTarea})
+
+            if(!usuario) {
+                console.log('‼️ Usuario no encontrado');
+                res.status(404).json({ 'msg': 'Usuario no encontrado' });
+            }
+
+            if(!tarea) {
+                console.log('‼️ Tarea no encontrada!');
+                res.status(404).json({ 'msg': 'Tarea no encontrada' });
+            }
+
+            tarea.idU = idUsuario
+            tarea.estado = 'por hacer'
+
+            await tarea.save()
+
+            console.log('🔵 Tarea asignada correctamente!');
+            res.status(200).json(tarea);
+        } catch (error) {
+            console.error('❌ Error al asignar la tarea:', error);
+            res.status(500).json({ 'msg': 'Error al asignar la tarea' });
+        }
     }
 }
 
