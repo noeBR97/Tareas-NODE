@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cliente Gestión de Tareas</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { margin-top: 30px; }
+        button { margin: 5px 0; }
+        input, select { margin: 3px 0; }
+        pre { background: #f4f4f4; padding: 10px; }
+        #mensaje { font-weight: bold; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Cliente de Gestión de Tareas</h1>
+
+<div id="mensaje"></div>
+
+<!-- 🔐 AUTENTICACIÓN -->
+<h2>Autenticación</h2>
+
+<h3>Registro</h3>
+<input id="reg-nombre" placeholder="Nombre"><br>
+<input id="reg-apellido1" placeholder="Apellido"><br>
+<input id="reg-email" placeholder="Email"><br>
+<input id="reg-password" type="password" placeholder="Contraseña"><br>
+<button onclick="registro()">Registrarse</button>
+
+<h3>Login</h3>
+<input id="login-email" placeholder="Email"><br>
+<input id="login-password" type="password" placeholder="Contraseña"><br>
+<button onclick="login()">Login</button>
+
+<h3>Token JWT</h3>
+<input type="text" id="token" size="80"><br>
+
+<hr>
+
+<!-- 📋 CONSULTAS -->
+<h2>Consultas de Tareas</h2>
+
+<h3>Tareas por dificultad</h3>
+<select id="dificultad">
+    <option>XS</option>
+    <option>S</option>
+    <option>M</option>
+    <option>L</option>
+    <option>XL</option>
+</select>
+<button onclick="tareasPorDificultad()">Consultar</button>
+
+<h3>Tareas por rango de dificultad</h3>
+<input id="min" placeholder="XS">
+<input id="max" placeholder="XL">
+<button onclick="tareasPorRango()">Consultar</button>
+
+<h3>Número de tareas XL</h3>
+<button onclick="tareasMaxDificultad()">Consultar</button>
+
+<h3>Tareas de un usuario</h3>
+<input id="userId" placeholder="ID Usuario">
+<button onclick="tareasPorUsuario()">Consultar</button>
+
+<h3>Tareas de usuario por dificultad</h3>
+<select id="difUsuario">
+    <option>XS</option>
+    <option>S</option>
+    <option>M</option>
+    <option>L</option>
+    <option>XL</option>
+</select>
+<button onclick="tareasUsuarioDificultad()">Consultar</button>
+
+<h3>Tareas sin asignar</h3>
+<button onclick="tareasSinAsignar()">Consultar</button>
+
+<h3>Tareas por estado</h3>
+<select id="estado">
+    <option>por hacer</option>
+    <option>haciendo</option>
+    <option>hecha</option>
+</select>
+<button onclick="tareasPorEstado()">Consultar</button>
+
+<hr>
+
+<h2>Resultado</h2>
+<pre id="resultado"></pre>
+
+<script>
+const API_TASKS = 'http://localhost:9090/api/tasks';
+const API_AUTH = 'http://localhost:9090/api';
+
+/* =====================
+   UTILIDADES
+===================== */
+
+function mostrarMensaje(texto, ok = true) {
+    const div = document.getElementById('mensaje');
+    div.style.color = ok ? 'green' : 'red';
+    div.textContent = texto;
+}
+
+function mostrarResultado(data) {
+    document.getElementById('resultado').textContent =
+        JSON.stringify(data, null, 2);
+}
+
+function setToken(token) {
+    document.getElementById('token').value = token;
+    localStorage.setItem('token', token);
+}
+
+function getToken() {
+    return localStorage.getItem('token') || '';
+}
+
+// Cargar token al iniciar
+document.getElementById('token').value = getToken();
+
+function headers() {
+    return {
+        'Content-Type': 'application/json',
+        'x-token': document.getElementById('token').value
+    };
+}
+
+/* =====================
+   REGISTRO
+===================== */
+
+async function registro() {
+    const body = {
+        nombre: document.getElementById('reg-nombre').value.trim(),
+        apellido1: document.getElementById('reg-apellido1').value.trim(),
+        email: document.getElementById('reg-email').value.trim(),
+        password: document.getElementById('reg-password').value
+    };
+
+    if (!body.nombre || !body.apellido1 || !body.email || !body.password) {
+        mostrarMensaje('❌ Todos los campos son obligatorios', false);
+        return;
+    }
+
+    const res = await fetch(`${API_AUTH}/registro`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        mostrarMensaje('✅ Registro realizado correctamente');
+    } else {
+        mostrarMensaje(data.msg || '❌ Error en el registro', false);
+    }
+
+    mostrarResultado(data);
+}
+
+/* =====================
+   LOGIN
+===================== */
+
+async function login() {
+    const body = {
+        email: document.getElementById('login-email').value.trim(),
+        password: document.getElementById('login-password').value
+    };
+
+    if (!body.email || !body.password) {
+        mostrarMensaje('❌ Email y contraseña obligatorios', false);
+        return;
+    }
+
+    const res = await fetch(`${API_AUTH}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.token) {
+        setToken(data.token);
+        mostrarMensaje('🔑 Login realizado correctamente');
+    } else {
+        mostrarMensaje(data.msg || '❌ Error en el login', false);
+    }
+
+    mostrarResultado(data);
+}
+
+/* =====================
+   CONSULTAS
+===================== */
+
+async function mostrar(url) {
+    const res = await fetch(url, { headers: headers() });
+    const data = await res.json();
+    mostrarResultado(data);
+}
+
+function tareasPorDificultad() {
+    mostrar(`${API_TASKS}/dificultad/${dificultad.value}`);
+}
+
+function tareasPorRango() {
+    mostrar(`${API_TASKS}/rango/${min.value}/${max.value}`);
+}
+
+function tareasMaxDificultad() {
+    mostrar(`${API_TASKS}/max-dificultad`);
+}
+
+function tareasPorUsuario() {
+    mostrar(`${API_TASKS}/usuario/${userId.value}`);
+}
+
+function tareasUsuarioDificultad() {
+    mostrar(`${API_TASKS}/usuario/${userId.value}/dificultad/${difUsuario.value}`);
+}
+
+function tareasSinAsignar() {
+    mostrar(`${API_TASKS}/sin-asignar`);
+}
+
+function tareasPorEstado() {
+    mostrar(`${API_TASKS}/estado/${encodeURIComponent(estado.value)}`);
+}
+</script>
+
+</body>
+</html>
