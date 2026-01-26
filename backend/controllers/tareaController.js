@@ -96,24 +96,24 @@ const controlador = {
         }
     },
 
-    asignarTarea: async (res, req) => {
+    asignarTarea: async (req, res) => {
         try {
             const {idTarea, idUsuario} = req.params
-            const usuario = await Usuario.findOne({_id: idUsuario})
-            const tarea = await Tarea.findOne({id: idTarea})
+            const usuario = await Usuario.findOne({id: idUsuario})
+            const tarea = await Tarea.findOne({_id: idTarea})
 
             if(!usuario) {
                 console.log('‼️ Usuario no encontrado');
-                res.status(404).json({ 'msg': 'Usuario no encontrado' });
+                return res.status(404).json({ 'msg': 'Usuario no encontrado' });
             }
 
             if(!tarea) {
                 console.log('‼️ Tarea no encontrada!');
-                res.status(404).json({ 'msg': 'Tarea no encontrada' });
+                return res.status(404).json({ 'msg': 'Tarea no encontrada' });
             }
 
             tarea.idU = idUsuario
-            tarea.estado = 'por hacer'
+            tarea.estado = 'haciendo'
 
             await tarea.save()
 
